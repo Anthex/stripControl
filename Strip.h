@@ -17,6 +17,11 @@
 #define LEFT 0
 #define RIGHT 1
 
+//Serial messages (range 128 - 255)
+#define SETSECONDARYCOLOR 125
+#define SETPRIMARYCOLOR 127
+#define READMODE 126
+
 #ifndef _STRIP_h
 #define _STRIP_h
 
@@ -46,7 +51,7 @@ public:
 	Strip();
 	Strip(int channel, int data_pin, int clock_pin);
 	void light(int val);
-	void dot(int val);
+	void dot(int val,int len);
 	void pulse(int val);
 	void gradient(int val);
 	void sendStartFrame();

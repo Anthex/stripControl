@@ -81,9 +81,9 @@ void Strip::light(int val)
   // LIT LED FRAMES
   for (int a = 0; a < val; a++) {
     shiftOut(dataPin, clk, MSBFIRST, 0xff);
-    shiftOut(dataPin, clk, MSBFIRST, primaryColor.getBlue() / 5);
-    shiftOut(dataPin, clk, MSBFIRST, primaryColor.getGreen() / 5);
-    shiftOut(dataPin, clk, MSBFIRST, primaryColor.getRed() / 5);
+    shiftOut(dataPin, clk, MSBFIRST, primaryColor.getBlue());
+    shiftOut(dataPin, clk, MSBFIRST, primaryColor.getGreen());
+    shiftOut(dataPin, clk, MSBFIRST, primaryColor.getRed());
   }
 
   //DIM LED FRAMES
@@ -100,22 +100,22 @@ void Strip::light(int val)
 	lights up 3 LEDs in a solid color (primaryColor). The lit LEDs are the 3 consecutive LEDs starting at the given index (value)
 	@param val the index at which the first LED will be lit
 */
-void Strip::dot(int val)
+void Strip::dot(int val, int len=3)
 {
   sendStartFrame();
 
-  for (int a = 0; a < val - 3; a++) {
+  for (int a = 0; a < val - len; a++) {
     shiftOut(dataPin, clk, MSBFIRST, 0xff);
     shiftOut(dataPin, clk, MSBFIRST, 0);
     shiftOut(dataPin, clk, MSBFIRST, 0);
     shiftOut(dataPin, clk, MSBFIRST, 0);
   }
 
-  for (int a = val - 3; a < val; a++) {
+  for (int a = val - len; a < val; a++) {
     shiftOut(dataPin, clk, MSBFIRST, 0xff);
-    shiftOut(dataPin, clk, MSBFIRST, primaryColor.getBlue() / 5);
-    shiftOut(dataPin, clk, MSBFIRST, primaryColor.getGreen() / 5);
-    shiftOut(dataPin, clk, MSBFIRST, primaryColor.getRed() / 5);
+    shiftOut(dataPin, clk, MSBFIRST, ((primaryColor.getBlue() * (STRIP_LENGTH - a) + (secondaryColor.getBlue()*a))) / STRIP_LENGTH);
+    shiftOut(dataPin, clk, MSBFIRST, ((primaryColor.getGreen() * (STRIP_LENGTH - a) + (secondaryColor.getGreen()*a))) / STRIP_LENGTH);
+    shiftOut(dataPin, clk, MSBFIRST, ((primaryColor.getRed() * (STRIP_LENGTH - a) + (secondaryColor.getRed()*a))) / STRIP_LENGTH);
   }
 
   for (int a = val; a < STRIP_LENGTH; a++) {
